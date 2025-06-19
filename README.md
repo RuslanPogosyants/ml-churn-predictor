@@ -1,18 +1,63 @@
-# Churn Prediction ML API
 
-Проект для предсказания оттока клиентов (churn) с использованием моделей машинного обучения.
+# ML Churn Predictor
 
-## 🔧 Стек технологий
-- Python 3.11
-- pandas, scikit-learn
-- FastAPI
-- Docker
-- pytest
-- GitHub Actions (CI)
+Predict customer churn using an ML model wrapped in FastAPI + Docker + CI.
 
-## ⚙️ Возможности
-- Обработка входных данных
-- Предсказание оттока по обученной модели
-- REST API через FastAPI
-- Docker-сборка и запуск
-- Покрытие unit-тестами
+## Стек
+- Python 3.11, Pandas, Scikit‑Learn
+- FastAPI, Uvicorn
+- Docker & docker-compose
+- Pytest, GitHub Actions (CI)
+
+## Структура
+```
+
+```text
+ml-churn-predictor/
+├── app/
+├── model/
+├── data/
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+└── .github/workflows/
+```
+
+## Локальный запуск
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Linux/Mac
+.venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+python model/train.py
+uvicorn app.main:app --reload
+```
+
+## В Docker
+
+```bash
+docker-compose up --build
+```
+
+Будет доступен по: [http://localhost:8000/docs](http://localhost:8000/docs).
+
+## естирование
+
+```bash
+pytest -q
+```
+
+## Использование API
+
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"gender":"Male", ...rest of fields...}'
+```
+
+## Модель
+
+* Алгоритм: RandomForestClassifier
+* Метрика: see classification report in console
+

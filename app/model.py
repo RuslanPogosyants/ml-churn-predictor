@@ -5,9 +5,9 @@ from app.utils import preprocess_input
 
 
 def load_model():
-    path = os.path.join(os.path.dirname(__file__), "..", "model/model", "churn_model.pkl")
-    path = os.path.abspath(path)
-    return joblib.load(path)
+    base = os.path.dirname(__file__)
+    model_path = os.path.abspath(os.path.join(base, "..", "model", "model", "churn_model.pkl"))
+    return joblib.load(model_path)
 
 
 def predict(model, data):

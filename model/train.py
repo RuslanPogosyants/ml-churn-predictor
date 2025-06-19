@@ -1,25 +1,31 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
 import joblib
 import os
 
-data = pd.DataFrame({
-    "age": [25, 45, 35, 52, 23],
-    "gender": ["male", "female", "female", "male", "male"],
-    "income": [30000, 54000, 42000, 63000, 27000],
-    "contract_type": ["month-to-month", "two-year", "one-year", "month-to-month", "two-year"],
-    "churn": [0, 1, 0, 1, 0]
-})
+df = pd.read_csv("./data/telco_churn_sample.csv")
 
-data = pd.get_dummies(data, columns=["gender", "contract_type"])
-X = data.drop("churn", axis=1)
-y = data["churn"]
+df["Churn"] = df["Churn"].map({"Yes": 1, "No": 0})
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+df = pd.get_dummies(df)
 
-clf = RandomForestClassifier()
+X = df.drop("Churn", axis=1)
+y = df["Churn"]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
 clf.fit(X_train, y_train)
 
-os.makedirs("model", exist_ok=True)
-joblib.dump(clf, "model/churn_model.pkl")
+y_pred = clf.predict(X_test)
+print(classification_report(y_test, y_pred))
+
+model_dir = "model"
+os.makedirs(model_dir, exist_ok=True)
+joblib.dump(clf, f"{model_dir}/churn_model.pkl")
+
+with open(f"{model_dir}/expected_columns.txt", "w") as f:
+    for col in X.columns:
+        f.write(col + "\n")
