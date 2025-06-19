@@ -42,7 +42,7 @@ docker-compose up --build
 
 Будет доступен по: [http://localhost:8000/docs](http://localhost:8000/docs).
 
-## естирование
+## Тестирование
 
 ```bash
 pytest -q
@@ -53,7 +53,27 @@ pytest -q
 ```bash
 curl -X POST http://localhost:8000/predict \
   -H "Content-Type: application/json" \
-  -d '{"gender":"Male", ...rest of fields...}'
+  -d '{
+        "gender": "Male",
+        "SeniorCitizen": 0,
+        "Partner": "Yes",
+        "Dependents": "No",
+        "tenure": 12,
+        "PhoneService": "Yes",
+        "MultipleLines": "Yes",
+        "InternetService": "Fiber optic",
+        "OnlineSecurity": "No",
+        "OnlineBackup": "No",
+        "DeviceProtection": "Yes",
+        "TechSupport": "No",
+        "StreamingTV": "Yes",
+        "StreamingMovies": "Yes",
+        "Contract": "One year",
+        "PaperlessBilling": "Yes",
+        "PaymentMethod": "Electronic check",
+        "MonthlyCharges": 75.5,
+        "TotalCharges": 960
+    }'
 ```
 
 ## Модель
